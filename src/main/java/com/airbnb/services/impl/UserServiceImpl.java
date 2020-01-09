@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+
     public UserInformation findByIdCurrent(Long id) {
         return userDao.userInformation(id);
     }
