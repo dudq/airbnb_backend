@@ -1,7 +1,5 @@
 package com.airbnb.models;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,7 +24,7 @@ public class User {
     @Size(min = 3, max = 50)
     private String username;
 
-    @NaturalId
+//    @NaturalId
     @NotBlank
     @Size(max = 50)
     @Email

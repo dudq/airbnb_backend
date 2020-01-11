@@ -61,9 +61,9 @@ public class UserController {
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         User currentUser = userService.findById(getCurrentUser().getId());
 
-//        currentUser.setEmail(user.getEmail());
-        currentUser.setUsername(user.getUsername());
-        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        currentUser.setEmail(user.getEmail());
+//        currentUser.setUsername(user.getUsername());
+//        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         currentUser.setName(user.getName());
         userService.updateUser(currentUser);
 
@@ -78,7 +78,7 @@ public class UserController {
         return new ResponseEntity<UserInformation>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user/confirmPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/confirmPassword", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER') or hasRole('HOST') or hasRole('ADMIN')")
     public ResponseEntity<ResponseMessage> comparePassword(@RequestBody String password) throws Exception {
         try {
