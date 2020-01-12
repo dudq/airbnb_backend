@@ -1,6 +1,6 @@
 package com.airbnb.messages.response;
 
-public class HouseList {
+public class HouseInformation {
     private Long id;
     private String name;
     private String address;

@@ -1,7 +1,7 @@
 package com.airbnb.repositories;
 
 import com.airbnb.messages.response.HouseDetail;
-import com.airbnb.messages.response.HouseList;
+import com.airbnb.messages.response.HouseInformation;
 import com.airbnb.models.House;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -33,24 +34,37 @@ public class HouseDao {
         query.setParameter("houseId", houseId);
         Object[] result = (Object[]) query.getSingleResult();
 
-        int i = 0;
+        int index = 0;
         HouseDetail houseDetail = new HouseDetail();
-        houseDetail.setId(Long.parseLong("" + result[i++]));
-        houseDetail.setName(result[i++].toString());
-        houseDetail.setAddress(result[i++].toString());
-        houseDetail.setBedroomNumber(result[i++].toString());
-        houseDetail.setBathroomNumber(result[i++].toString());
-        houseDetail.setDescription(result[i++].toString());
-        houseDetail.setPrice(result[i++].toString());
-        houseDetail.setArea(result[i++].toString());
-        houseDetail.setStatus(result[i++].toString());
-        houseDetail.setUserName(result[i++].toString());
-        houseDetail.setUserId(result[i++].toString());
+        houseDetail.setId(Long.parseLong("" + result[index++]));
+        houseDetail.setName(result[index++].toString());
+        houseDetail.setAddress(result[index++].toString());
+        houseDetail.setBedroomNumber(result[index++].toString());
+        houseDetail.setBathroomNumber(result[index++].toString());
+        houseDetail.setDescription(result[index++].toString());
+        houseDetail.setPrice(result[index++].toString());
+        houseDetail.setArea(result[index++].toString());
+        houseDetail.setStatus(result[index++].toString());
+        houseDetail.setUserName(result[index++].toString());
+        houseDetail.setUserId(result[index].toString());
 
         return houseDetail;
     }
 
-    public List<HouseList> getListHouse(int page, int pageSize) {
+    public List<HouseInformation> getListHouse(int page, int pageSize) {
+        String sql = "select h.id, h.houseName, h.address, h.price, h.picture " +
+                "from house h " +
+                "left join users u " +
+                "on h.host_id = u.id;";
+        Query query = em.createNativeQuery(sql);
+        List<Object[]> listResult = query.getResultList();
 
+        List<HouseInformation> houseInformation = new ArrayList<>();
+        HouseInformation house;
+        int index;
+        for (Object[] result : listResult) {
+            index = 0;
+            house = new HouseInformation(;
+        }
     }
 }
