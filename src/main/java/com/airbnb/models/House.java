@@ -35,7 +35,7 @@ public class House {
     @Column(name = "host_id")
 //    @ManyToOne
 //    @JoinColumn(name = "host_id")
-    private User user;
+    private Long user;
 
 
     public Long getId() {
@@ -134,11 +134,11 @@ public class House {
         this.status = status;
     }
 
-    public User getUser() {
+    public Long getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Long user) {
         this.user = user;
     }
 }
