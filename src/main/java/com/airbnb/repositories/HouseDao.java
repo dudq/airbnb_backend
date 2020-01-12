@@ -2,6 +2,7 @@ package com.airbnb.repositories;
 
 import com.airbnb.messages.response.HouseDetail;
 import com.airbnb.messages.response.HouseInformation;
+import com.airbnb.messages.response.HouseInformationOfHost;
 import com.airbnb.models.House;
 import org.springframework.stereotype.Repository;
 
@@ -59,12 +60,46 @@ public class HouseDao {
         Query query = em.createNativeQuery(sql);
         List<Object[]> listResult = query.getResultList();
 
-        List<HouseInformation> houseInformation = new ArrayList<>();
+        List<HouseInformation> houseList = new ArrayList<>();
         HouseInformation house;
         int index;
         for (Object[] result : listResult) {
             index = 0;
-            house = new HouseInformation(;
+            house = new HouseInformation();
+            house.setId(Long.parseLong(result[index++].toString()));
+            house.setName(result[index++].toString());
+            house.setAddress(result[index++].toString());
+            house.setPrice(result[index++].toString());
+            house.setPicture(result[index++].toString());
+            houseList.add(house);
         }
+        return houseList;
+    }
+
+    public List<HouseInformationOfHost> getListHouseInformationOfHost(Long userId) {
+        String sql = "select h.id, h.houseName, h.address, h.price, h.status " +
+                "from house h join user u join user_roles ur " +
+                "on h.host_id = u.id and h.host_id = ur.user_id " +
+                "where ur.role_id = 2 and ur.user_id = :urid;";
+        Query query = em.createNativeQuery(sql);
+        query.setParameter("urid", userId);
+
+        List<Object[]> listResult = query.getResultList();
+
+        List<HouseInformationOfHost> houseInformationOfHostList = new ArrayList<>();
+        HouseInformationOfHost house;
+        int index;
+        for (Object[] result : listResult) {
+            index = 0;
+            house = new HouseInformationOfHost();
+            house.setId(Long.parseLong(result[index++].toString()));
+            house.setName(result[index++].toString());
+            house.setAddress(result[index++].toString());
+            house.setPrice(result[index++].toString());
+            house.setStatus(result[index++].toString());
+
+            houseInformationOfHostList.add(house);
+        }
+        return houseInformationOfHostList;
     }
 }
