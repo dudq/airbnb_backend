@@ -5,7 +5,7 @@ import javax.persistence.Lob;
 public class HouseDetail {
     private Long id;
     private String name;
-    //    private String categoryName;
+    private String categoryName;
     @Lob
     private String picture;
     private String address;
@@ -24,6 +24,14 @@ public class HouseDetail {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getName() {
