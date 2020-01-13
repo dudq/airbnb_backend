@@ -1,6 +1,6 @@
 package com.airbnb.services;
 
-import com.airbnb.messages.request.CreateHouseRequest;
+import com.airbnb.messages.request.HouseRequest;
 import com.airbnb.messages.response.HouseDetail;
 import com.airbnb.messages.response.HouseInformation;
 import com.airbnb.models.House;
@@ -23,7 +23,7 @@ public interface HouseService {
 
     void deleteHouse(Long id);
 
-    void createHouseRequest(CreateHouseRequest house);
+    void createHouseRequest(HouseRequest house);
 
     HouseDetail getHouseDetailById(Long id);
 

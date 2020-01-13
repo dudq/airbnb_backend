@@ -1,5 +1,6 @@
 package com.airbnb.services.impl;
 
+import com.airbnb.messages.request.HouseRequest;
 import com.airbnb.messages.response.HouseDetail;
 import com.airbnb.messages.response.HouseInformation;
 import com.airbnb.models.House;
@@ -45,6 +46,12 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public void deleteHouse(Long id) {
         houseRepository.deleteById(id);
+    }
+
+    @Override
+    public void createHouseRequest(HouseRequest houseRequest) {
+        House house = houseRequest.cloneHouse();
+        houseDao.insert(house);
     }
 
 

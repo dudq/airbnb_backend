@@ -3,7 +3,7 @@ package com.airbnb.messages.request;
 import com.airbnb.models.House;
 import com.airbnb.models.Status;
 
-public class CreateHouseRequest {
+public class HouseRequest {
 
     private String houseName;
     //    private Long category;
