@@ -1,7 +1,5 @@
 package com.airbnb.models;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,7 +24,7 @@ public class User {
     @Size(min = 3, max = 50)
     private String username;
 
-    @NaturalId
+//    @NaturalId
     @NotBlank
     @Size(max = 50)
     @Email
@@ -43,6 +41,10 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+//    @OneToMany(targetEntity = House.class)
+//    private List<House> house;
+
 
     public User() {
     }
@@ -101,4 +103,20 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+//    public List<House> getHouse() {
+//        return house;
+//    }
+//
+//    public void setHouse(List<House> house) {
+//        this.house = house;
+//    }
 }

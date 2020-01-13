@@ -16,4 +16,5 @@ public class AirbnbApplication extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(AirbnbApplication.class);
     }
+
 }
