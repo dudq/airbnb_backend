@@ -7,6 +7,7 @@ import com.airbnb.models.House;
 import com.airbnb.security.sevice.UserPrinciple;
 import com.airbnb.services.HostService;
 import com.airbnb.services.HouseService;
+import com.airbnb.services.ImageOfHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ public class HostController {
 
     @Autowired
     private HouseService houseService;
+
+    @Autowired
+    private ImageOfHouseService imageOfHouseService;
 
     private UserPrinciple getCurrentUser() {
         return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -52,6 +56,15 @@ public class HostController {
     @PostMapping("/houses")
     @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<ResponseMessage> createHouse(@RequestBody HouseRequest houseRequest) {
+//        List<String> urlImages = houseRequest.getPicture();
+//        List<ImageOfHouse> pictures = new ArrayList<>();
+//        for (String image: urlImages) {
+//            ImageOfHouse imageOfHouse = new ImageOfHouse();
+//            imageOfHouse.setImageUrl(image);
+//            imageOfHouseService.createImageOfHouse(imageOfHouse);
+//            pictures.add(imageOfHouse);
+//        }
+
         houseService.createHouseRequest(houseRequest);
 
         return new ResponseEntity<ResponseMessage>(

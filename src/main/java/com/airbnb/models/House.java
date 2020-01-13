@@ -1,7 +1,6 @@
 package com.airbnb.models;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "house")
@@ -13,9 +12,9 @@ public class House {
     private String houseName;
     private Long category;
 
-    //    @Lob
-    @OneToMany(targetEntity = ImageOfHouse.class)
-    private List<ImageOfHouse> picture;
+    @Lob
+//    @OneToMany(targetEntity = ImageOfHouse.class)
+    private String picture;
 
 //    @OneToMany(targetEntity = OrderHouse.class)
 //    @JsonManagedReference
@@ -64,11 +63,11 @@ public class House {
         this.category = category;
     }
 
-    public List<ImageOfHouse> getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(List<ImageOfHouse> picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 

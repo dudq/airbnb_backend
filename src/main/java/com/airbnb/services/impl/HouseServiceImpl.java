@@ -56,7 +56,6 @@ public class HouseServiceImpl implements HouseService {
         houseDao.insert(house);
     }
 
-
     @Override
     public HouseDetail getHouseDetailById(Long id) {
         return houseDao.getHouseDetailById(id);
