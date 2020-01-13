@@ -7,7 +7,6 @@ import com.airbnb.models.House;
 import com.airbnb.security.sevice.UserPrinciple;
 import com.airbnb.services.HostService;
 import com.airbnb.services.HouseService;
-import com.airbnb.services.ImageOfHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +26,8 @@ public class HostController {
     @Autowired
     private HouseService houseService;
 
-    @Autowired
-    private ImageOfHouseService imageOfHouseService;
+//    @Autowired
+//    private ImageOfHouseService imageOfHouseService;
 
     private UserPrinciple getCurrentUser() {
         return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -86,7 +85,7 @@ public class HostController {
         }
 
         currentHouse.setHouseName(house.getHouseName());
-        currentHouse.setCategory(house.getCategory());
+//        currentHouse.setCategory(house.getCategory());
         currentHouse.setPicture(house.getPicture());
         currentHouse.setAddress(house.getAddress());
         currentHouse.setBedroomNumber(house.getBedroomNumber());
@@ -99,7 +98,7 @@ public class HostController {
 
         return new ResponseEntity<ResponseMessage>(
                 new ResponseMessage(true, "Update successfully", null),
-                HttpStatus.UPGRADE_REQUIRED
+                HttpStatus.OK
         );
     }
 
