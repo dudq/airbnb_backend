@@ -14,7 +14,7 @@ public class HostServiceImpl implements HostService {
 
 
     @Override
-    public List<HouseInformationOfHost> getHouseListOfHouse(Long userId) {
+    public List<HouseInformationOfHost> getHouseListOfHost(Long userId) {
         return houseDao.getListHouseInformationOfHost(userId);
     }
 }

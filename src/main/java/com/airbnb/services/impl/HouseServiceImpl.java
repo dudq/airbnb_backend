@@ -8,9 +8,11 @@ import com.airbnb.repositories.HouseDao;
 import com.airbnb.repositories.HouseRepository;
 import com.airbnb.services.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class HouseServiceImpl implements HouseService {
     @Autowired
     private HouseRepository houseRepository;
