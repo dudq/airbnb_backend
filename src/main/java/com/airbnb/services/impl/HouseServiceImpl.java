@@ -47,6 +47,7 @@ public class HouseServiceImpl implements HouseService {
         houseRepository.deleteById(id);
     }
 
+
     @Override
     public HouseDetail getHouseDetailById(Long id) {
         return houseDao.getHouseDetailById(id);
