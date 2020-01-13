@@ -78,9 +78,9 @@ public class HouseDao {
 
     public List<HouseInformationOfHost> getListHouseInformationOfHost(Long userId) {
         String sql = "select h.id, h.houseName, h.address, h.price, h.status " +
-                "from house h join user u join user_roles ur " +
+                "from house h join users u join user_roles ur " +
                 "on h.host_id = u.id and h.host_id = ur.user_id " +
-                "where ur.role_id = 2 and ur.user_id = :urid;";
+                "where ur.role_id = 2 and ur.user_id = :urid";
         Query query = em.createNativeQuery(sql);
         query.setParameter("urid", userId);
 
