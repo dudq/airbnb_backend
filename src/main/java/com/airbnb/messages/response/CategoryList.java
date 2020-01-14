@@ -1,4 +1,4 @@
-package com.airbnb.messages.request;
+package com.airbnb.messages.response;
 
 public class CategoryList {
     private Long id;
