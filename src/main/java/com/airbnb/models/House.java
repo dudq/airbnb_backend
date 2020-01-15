@@ -2,6 +2,7 @@ package com.airbnb.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "house")
@@ -16,9 +17,9 @@ public class House {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Lob
-//    @OneToMany(targetEntity = ImageOfHouse.class)
-    private String picture;
+    //    @Lob
+    @OneToMany(targetEntity = ImageOfHouse.class)
+    private List<ImageOfHouse> picture;
 
 //    @OneToMany(targetEntity = OrderHouse.class)
 //    @JsonManagedReference
@@ -37,10 +38,10 @@ public class House {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "host_id")
-//    @ManyToOne
-//    @JoinColumn(name = "host_id")
-    private Long user;
+    //    @Column(name = "host_id")
+    @ManyToOne
+    @JoinColumn(name = "host_id")
+    private User user;
 
 
     public Long getId() {
@@ -67,11 +68,11 @@ public class House {
         this.category = category;
     }
 
-    public String getPicture() {
+    public List<ImageOfHouse> getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(List<ImageOfHouse> picture) {
         this.picture = picture;
     }
 
@@ -139,11 +140,11 @@ public class House {
         this.status = status;
     }
 
-    public Long getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Long user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

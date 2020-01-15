@@ -9,7 +9,7 @@ public class ImageOfHouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageUrl;
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "house_id")
@@ -26,12 +26,12 @@ public class ImageOfHouse {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public House getHouse() {
