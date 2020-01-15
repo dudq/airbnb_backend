@@ -43,11 +43,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void updateCategory(Category category) {
+        Category categoryExisting = categoryRepository.findById(category.getId()).get();
+        if (categoryExisting == null) {
+            throw new InvalidRequestException("Category is not existed");
+        }
         categoryRepository.save(category);
     }
 
     @Override
     public void deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id).get();
+
+        if (category == null) {
+            throw new InvalidRequestException("Category is not existed");
+        }
+
         categoryRepository.deleteById(id);
     }
 }

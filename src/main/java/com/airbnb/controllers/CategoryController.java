@@ -49,7 +49,7 @@ public class CategoryController {
     public ResponseEntity<Void> updateCategory(@RequestBody Category category) {
         try {
             categoryService.updateCategory(category);
-            return new ResponseEntity<>(HttpStatus.UPGRADE_REQUIRED);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

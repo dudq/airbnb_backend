@@ -20,7 +20,7 @@ public class HouseRequest {
     public House cloneHouse() {
         House house = new House();
         house.setHouseName(houseName);
-        house.setCategory(category);
+//        house.setCategory(category);
         house.setPicture(picture);
         house.setAddress(address);
         house.setBedroomNumber(bedroomNumber);

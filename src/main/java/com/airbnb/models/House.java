@@ -1,10 +1,7 @@
 package com.airbnb.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Entity
 @Table(name = "house")
@@ -15,9 +12,9 @@ public class House {
     private Long id;
     @NotEmpty
     private String houseName;
-    @OneToMany(targetEntity = Category.class)
-    @JsonManagedReference
-    private List<Category> category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Lob
 //    @OneToMany(targetEntity = ImageOfHouse.class)
@@ -62,11 +59,11 @@ public class House {
         this.houseName = houseName;
     }
 
-    public List<Category> getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(List<Category> category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
