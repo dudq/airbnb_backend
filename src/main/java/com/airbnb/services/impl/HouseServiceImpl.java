@@ -1,5 +1,6 @@
 package com.airbnb.services.impl;
 
+import com.airbnb.exceptions.InvalidRequestException;
 import com.airbnb.messages.request.HouseRequest;
 import com.airbnb.messages.response.HouseDetail;
 import com.airbnb.messages.response.HouseInformation;
@@ -32,7 +33,11 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public House findById(Long id) {
-        return houseRepository.findById(id).get();
+        House house = houseRepository.findById(id).get();
+        if (house == null) {
+            throw new InvalidRequestException("House is not existed");
+        }
+        return house;
     }
 
     @Override
@@ -42,11 +47,19 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public void updateHouse(House house) {
+        House houseExisted = houseRepository.findById(house.getId()).get();
+        if (houseExisted == null) {
+            throw new InvalidRequestException("House is not existed");
+        }
         houseRepository.save(house);
     }
 
     @Override
     public void deleteHouse(Long id) {
+        House house = houseRepository.findById(id).get();
+        if (house == null) {
+            throw new InvalidRequestException("House is not existed");
+        }
         houseRepository.deleteById(id);
     }
 

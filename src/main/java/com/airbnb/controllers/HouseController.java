@@ -44,4 +44,5 @@ public class HouseController {
                 new ResponseMessage(true, "Successfully. Get list all house", houses), HttpStatus.OK
         );
     }
+
 }
