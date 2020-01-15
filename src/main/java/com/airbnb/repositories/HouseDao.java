@@ -96,7 +96,7 @@ public class HouseDao {
             house.setName(result[index++].toString());
             house.setAddress(result[index++].toString());
             house.setPrice(result[index++].toString());
-            house.setStatus(result[index++].toString());
+            house.setStatus(result[index].toString());
 
             houseInformationOfHostList.add(house);
         }

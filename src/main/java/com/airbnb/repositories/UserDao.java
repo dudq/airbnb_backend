@@ -36,7 +36,7 @@ public class UserDao {
         userInformation.setName("" + result[i++]);
         userInformation.setUsername("" + result[i++]);
         userInformation.setPicture("" + result[i++]);
-        userInformation.setRole_name("" + result[i++]);
+        userInformation.setRole_name("" + result[i]);
         return userInformation;
     }
 }
