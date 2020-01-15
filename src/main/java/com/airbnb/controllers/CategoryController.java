@@ -17,7 +17,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> listAllCategories() {
+    public ResponseEntity<List<Category>> getListCategory() {
         List<Category> categories = categoryService.findAll();
         if (categories.isEmpty()) {
             return new ResponseEntity<List<Category>>(HttpStatus.NOT_FOUND);

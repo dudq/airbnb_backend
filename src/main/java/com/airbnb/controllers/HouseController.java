@@ -2,6 +2,7 @@ package com.airbnb.controllers;
 
 import com.airbnb.messages.response.HouseInformation;
 import com.airbnb.messages.response.ResponseMessage;
+import com.airbnb.models.House;
 import com.airbnb.security.sevice.UserPrinciple;
 import com.airbnb.services.HouseService;
 import com.airbnb.services.UserService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,88 @@ public class HouseController {
 
     private UserPrinciple getCurrentUser() {
         return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<House>> getListHouse() {
+        List<House> houses = houseService.findAll();
+        if (houses.isEmpty()) {
+            return new ResponseEntity<List<House>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(houses, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<House> getHouse(@PathVariable("id") Long id) {
+        try {
+            House house = houseService.findById(id);
+            return new ResponseEntity<House>(house, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('HOST')")
+    public ResponseEntity<Void> createHouse(@RequestBody House house) {
+        try {
+            houseService.createHouse(house);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping
+    @PreAuthorize("hasRole('HOST')")
+    public ResponseEntity<Void> updateHouse(@RequestBody House house) {
+        try {
+            houseService.updateHouse(house);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('HOST')")
+    public ResponseEntity<Void> deleteHouse(@PathVariable(value = "id") Long id) {
+        try {
+            houseService.deleteHouse(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/findByName")
+    public ResponseEntity<List<House>> findHouse(@RequestParam String houseName) {
+        List<House> houses = houseService.findByHouseName(houseName);
+        if (houses.isEmpty()) {
+            return new ResponseEntity<List<House>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(houses, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/filterByCategory/{id}")
+    public ResponseEntity<List<House>> getListHouseByCategory(@PathVariable Long id) {
+        try {
+            List<House> houses = houseService.findByCategoryId(id);
+            return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/filterByHost/{id}")
+    public ResponseEntity<List<House>> getListHouseByHost(@PathVariable Long id) {
+        try {
+            List<House> houses = houseService.findByHostId(id);
+            return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

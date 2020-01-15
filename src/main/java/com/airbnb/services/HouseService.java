@@ -13,7 +13,11 @@ public interface HouseService {
 
     List<House> findAll();
 
-    List<House> findByUser(Long id);
+    List<House> findByHostId(Long id);
+
+    List<House> findByCategoryId(Long id);
+
+    List<House> findByHouseName(String houseName);
 
     House findById(Long id);
 

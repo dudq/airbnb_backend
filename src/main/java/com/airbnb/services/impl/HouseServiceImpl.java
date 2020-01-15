@@ -7,8 +7,10 @@ import com.airbnb.messages.response.HouseInformation;
 import com.airbnb.models.House;
 import com.airbnb.repositories.HouseDao;
 import com.airbnb.repositories.HouseRepository;
+import com.airbnb.security.sevice.UserPrinciple;
 import com.airbnb.services.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +23,31 @@ public class HouseServiceImpl implements HouseService {
     @Autowired
     private HouseDao houseDao;
 
+    private UserPrinciple getCurrentUser() {
+        return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     @Override
     public List<House> findAll() {
         return houseRepository.findAll();
     }
 
     @Override
-    public List<House> findByUser(Long id) {
+    public List<House> findByHostId(Long id) {
         return houseRepository.findByUser(id);
     }
+
+    @Override
+    public List<House> findByCategoryId(Long id) {
+        return houseRepository.findByCategory(id);
+    }
+
+
+    @Override
+    public List<House> findByHouseName(String houseName) {
+        return houseRepository.findByHouseName(houseName);
+    }
+
 
     @Override
     public House findById(Long id) {
@@ -42,7 +60,12 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public void createHouse(House house) {
-        houseRepository.save(house);
+        Long currentUserId = getCurrentUser().getId();
+        if (house.getUser().equals(currentUserId)) {
+            houseRepository.save(house);
+        } else {
+            throw new InvalidRequestException("Current user is not valid");
+        }
     }
 
     @Override
@@ -51,7 +74,13 @@ public class HouseServiceImpl implements HouseService {
         if (houseExisted == null) {
             throw new InvalidRequestException("House is not existed");
         }
-        houseRepository.save(house);
+
+        Long currentUserId = getCurrentUser().getId();
+        if (house.getUser().equals(currentUserId)) {
+            houseRepository.save(house);
+        } else {
+            throw new InvalidRequestException("Current user is not valid");
+        }
     }
 
     @Override
@@ -60,7 +89,13 @@ public class HouseServiceImpl implements HouseService {
         if (house == null) {
             throw new InvalidRequestException("House is not existed");
         }
-        houseRepository.deleteById(id);
+
+        Long currentUserId = getCurrentUser().getId();
+        if (house.getUser().equals(currentUserId)) {
+            houseRepository.delete(house);
+        } else {
+            throw new InvalidRequestException("Current user is not valid");
+        }
     }
 
     @Override

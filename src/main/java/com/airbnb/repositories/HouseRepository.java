@@ -10,5 +10,7 @@ import java.util.List;
 public interface HouseRepository extends JpaRepository<House, Long> {
     List<House> findByUser(Long hostId);
 
-    House findByHouseName(String name);
+    List<House> findByCategory(Long categoryId);
+
+    List<House> findByHouseName(String name);
 }
