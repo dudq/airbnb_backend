@@ -16,7 +16,19 @@ public class Category {
     @Column(unique = true)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "house_id")
+    private House house;
+
     public Category() {
+    }
+
+    public House getHouse() {
+        return house;
+    }
+
+    public void setHouse(House house) {
+        this.house = house;
     }
 
     public Category(@NotBlank String name) {

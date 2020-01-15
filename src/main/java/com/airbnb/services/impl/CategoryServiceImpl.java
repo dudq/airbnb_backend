@@ -1,5 +1,6 @@
 package com.airbnb.services.impl;
 
+import com.airbnb.exceptions.InvalidRequestException;
 import com.airbnb.models.Category;
 import com.airbnb.repositories.CategoryRepository;
 import com.airbnb.services.CategoryService;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -27,12 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
+        Category category = categoryRepository.findById(id).get();
 
         if (category == null) {
-            throw new InvalidRequestException
+            throw new InvalidRequestException("Category is not existed");
         }
-        return;
+
+        return category;
     }
 
     @Override
