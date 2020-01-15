@@ -6,7 +6,7 @@ import com.airbnb.models.Status;
 public class HouseRequest {
 
     private String houseName;
-    //    private Long category;
+    private Long category;
     private String picture;
     private String address;
     private Long bedroomNumber;
@@ -20,6 +20,7 @@ public class HouseRequest {
     public House cloneHouse() {
         House house = new House();
         house.setHouseName(houseName);
+        house.setCategory(category);
         house.setPicture(picture);
         house.setAddress(address);
         house.setBedroomNumber(bedroomNumber);
@@ -31,6 +32,14 @@ public class HouseRequest {
         house.setUser(user);
 
         return house;
+    }
+
+    public Long getCategory() {
+        return category;
+    }
+
+    public void setCategory(Long category) {
+        this.category = category;
     }
 
     public String getHouseName() {
