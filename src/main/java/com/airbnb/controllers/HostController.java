@@ -108,7 +108,7 @@ public class HostController {
         House house = this.houseService.findById(id);
 
         long currentUserId = getCurrentUser().getId();
-        if (house != null && house.getUser() == currentUserId) {
+        if (house != null && house.getUser().getId() == currentUserId) {
             this.houseService.deleteHouse(id);
             return new ResponseEntity<ResponseMessage>(
                     new ResponseMessage(true, "Delete the house successfully", null),

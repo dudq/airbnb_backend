@@ -1,5 +1,6 @@
 package com.airbnb.services.impl;
 
+import com.airbnb.exceptions.InvalidRequestException;
 import com.airbnb.models.Category;
 import com.airbnb.repositories.CategoryRepository;
 import com.airbnb.services.CategoryService;
@@ -26,7 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
-        return categoryRepository.findById(id).get();
+        Category category = categoryRepository.findById(id).get();
+
+        if (category == null) {
+            throw new InvalidRequestException("Category is not existed");
+        }
+
+        return category;
     }
 
     @Override
@@ -36,11 +43,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void updateCategory(Category category) {
+        Category categoryExisting = categoryRepository.findById(category.getId()).get();
+        if (categoryExisting == null) {
+            throw new InvalidRequestException("Category is not existed");
+        }
         categoryRepository.save(category);
     }
 
     @Override
     public void deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id).get();
+
+        if (category == null) {
+            throw new InvalidRequestException("Category is not existed");
+        }
+
         categoryRepository.deleteById(id);
     }
 }

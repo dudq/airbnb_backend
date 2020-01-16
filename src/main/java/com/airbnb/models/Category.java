@@ -1,9 +1,8 @@
 package com.airbnb.models;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 public class Category {
@@ -11,12 +10,23 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NaturalId
+    //    @NaturalId
     @NotBlank
     @Column(unique = true)
     private String name;
 
+    @OneToMany(targetEntity = House.class)
+    private List<House> house;
+
     public Category() {
+    }
+
+    public List<House> getHouse() {
+        return house;
+    }
+
+    public void setHouse(List<House> house) {
+        this.house = house;
     }
 
     public Category(@NotBlank String name) {

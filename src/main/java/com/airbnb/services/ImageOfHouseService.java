@@ -9,7 +9,7 @@ import java.util.List;
 public interface ImageOfHouseService {
     List<ImageOfHouse> findAll();
 
-    List<ImageOfHouse> findByHouseId(Long id);
+//    List<ImageOfHouse> findByHouseId(Long id);
 
     ImageOfHouse findById(Long id);
 

@@ -1,6 +1,9 @@
 package com.airbnb.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class ImageOfHouse {
@@ -9,13 +12,17 @@ public class ImageOfHouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageUrl;
+    private String url;
 
-    @ManyToOne
-    @JoinColumn(name = "house_id")
-    private House house;
+//    @ManyToOne
+//    @JoinColumn(name = "house_id")
+//    private House house;
 
     public ImageOfHouse() {
+    }
+
+    public ImageOfHouse(String url) {
+        this.url = url;
     }
 
     public Long getId() {
@@ -26,19 +33,19 @@ public class ImageOfHouse {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public House getHouse() {
-        return house;
-    }
-
-    public void setHouse(House house) {
-        this.house = house;
-    }
+//    public House getHouse() {
+//        return house;
+//    }
+//
+//    public void setHouse(House house) {
+//        this.house = house;
+//    }
 }
