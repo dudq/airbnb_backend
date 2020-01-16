@@ -18,6 +18,10 @@ public class ImageOfHouse {
     public ImageOfHouse() {
     }
 
+    public ImageOfHouse(String url) {
+        this.url = url;
+    }
+
     public Long getId() {
         return id;
     }

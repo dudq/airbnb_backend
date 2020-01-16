@@ -1,5 +1,6 @@
 package com.airbnb.controllers;
 
+import com.airbnb.messages.request.HouseRequest;
 import com.airbnb.messages.response.HouseInformation;
 import com.airbnb.messages.response.ResponseMessage;
 import com.airbnb.models.House;
@@ -52,7 +53,7 @@ public class HouseController {
 
     @PostMapping
     @PreAuthorize("hasRole('HOST')")
-    public ResponseEntity<Void> createHouse(@RequestBody House house) {
+    public ResponseEntity<Void> createHouse(@RequestBody HouseRequest house) {
         try {
             houseService.createHouse(house);
             return new ResponseEntity<>(HttpStatus.CREATED);

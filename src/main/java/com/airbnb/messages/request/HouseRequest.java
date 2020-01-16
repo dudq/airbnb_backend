@@ -1,13 +1,14 @@
 package com.airbnb.messages.request;
 
-import com.airbnb.models.House;
-import com.airbnb.models.Status;
+import com.airbnb.models.*;
+
+import java.util.List;
 
 public class HouseRequest {
 
     private String houseName;
     private Long category;
-    private String picture;
+    private List<String> picture;
     private String address;
     private Long bedroomNumber;
     private Long bathroomNumber;
@@ -17,20 +18,20 @@ public class HouseRequest {
     private Status status;
     private Long user;
 
-    public House cloneHouse() {
+
+    public House cloneHouse(Category category, List<ImageOfHouse> picture, User user) {
         House house = new House();
-        house.setHouseName(houseName);
-//        house.setCategory(category);
+        house.setHouseName(this.houseName);
+        house.setCategory(category);
         house.setPicture(picture);
-        house.setAddress(address);
-        house.setBedroomNumber(bedroomNumber);
-        house.setBathroomNumber(bathroomNumber);
-        house.setDescription(description);
-        house.setPrice(price);
-        house.setArea(area);
+        house.setAddress(this.address);
+        house.setBedroomNumber(this.bedroomNumber);
+        house.setBathroomNumber(this.bathroomNumber);
+        house.setDescription(this.description);
+        house.setPrice(this.price);
+        house.setArea(this.area);
         house.setStatus(status);
         house.setUser(user);
-
         return house;
     }
 
@@ -50,11 +51,11 @@ public class HouseRequest {
         this.houseName = houseName;
     }
 
-    public String getPicture() {
+    public List<String> getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(List<String> picture) {
         this.picture = picture;
     }
 
