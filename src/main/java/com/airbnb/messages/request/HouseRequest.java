@@ -16,7 +16,7 @@ public class HouseRequest {
     private Long price;
     private Long area;
     private Status status;
-    private Long user;
+//    private Long user;
 
 
     public House cloneHouse(Category category, List<ImageOfHouse> picture, User user) {
@@ -115,11 +115,11 @@ public class HouseRequest {
         this.status = status;
     }
 
-    public Long getUser() {
-        return user;
-    }
-
-    public void setUser(Long user) {
-        this.user = user;
-    }
+//    public Long getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(Long user) {
+//        this.user = user;
+//    }
 }

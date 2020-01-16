@@ -50,12 +50,14 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public List<House> findByHostId(Long id) {
-        return houseRepository.findByUser(id);
+        User user = userService.findById(id);
+        return houseRepository.findByUser(user);
     }
 
     @Override
     public List<House> findByCategoryId(Long id) {
-        return houseRepository.findByCategory(id);
+        Category category = categoryService.findById(id);
+        return houseRepository.findByCategory(category);
     }
 
 
@@ -76,7 +78,8 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public void createHouse(HouseRequest houseRequest) {
-        User user = userService.findById(houseRequest.getUser());
+        Long currentUserId = getCurrentUser().getId();
+        User user = userService.findById(currentUserId);
         Category category = categoryService.findById(houseRequest.getCategory());
         List<ImageOfHouse> imageOfHouses = new ArrayList<>();
         for (String picture : houseRequest.getPicture()) {
@@ -85,13 +88,7 @@ public class HouseServiceImpl implements HouseService {
             imageOfHouses.add(imageOfHouse);
         }
         House house = houseRequest.cloneHouse(category, imageOfHouses, user);
-
-        Long currentUserId = getCurrentUser().getId();
-        if (house.getUser().equals(currentUserId)) {
-            houseRepository.save(house);
-        } else {
-            throw new InvalidRequestException("Current user is not valid");
-        }
+        houseRepository.save(house);
     }
 
     @Override

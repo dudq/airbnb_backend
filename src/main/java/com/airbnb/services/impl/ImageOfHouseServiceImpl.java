@@ -4,9 +4,11 @@ import com.airbnb.models.ImageOfHouse;
 import com.airbnb.repositories.ImageOfHouseRepository;
 import com.airbnb.services.ImageOfHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ImageOfHouseServiceImpl implements ImageOfHouseService {
 
     @Autowired
@@ -17,10 +19,10 @@ public class ImageOfHouseServiceImpl implements ImageOfHouseService {
         return imageOfHouseRepository.findAll();
     }
 
-    @Override
-    public List<ImageOfHouse> findByHouseId(Long id) {
-        return imageOfHouseRepository.findByHouse(id);
-    }
+//    @Override
+//    public List<ImageOfHouse> findByHouseId(Long id) {
+//        return imageOfHouseRepository.findByHouse(id);
+//    }
 
     @Override
     public ImageOfHouse findById(Long id) {

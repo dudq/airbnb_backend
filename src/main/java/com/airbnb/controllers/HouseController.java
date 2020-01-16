@@ -84,7 +84,7 @@ public class HouseController {
         }
     }
 
-    @GetMapping("/findByName")
+    @GetMapping("/find")
     public ResponseEntity<List<House>> findHouse(@RequestParam String houseName) {
         List<House> houses = houseService.findByHouseName(houseName);
         if (houses.isEmpty()) {
@@ -94,7 +94,7 @@ public class HouseController {
 
     }
 
-    @GetMapping("/filterByCategory/{id}")
+    @GetMapping("/category/{id}")
     public ResponseEntity<List<House>> getListHouseByCategory(@PathVariable Long id) {
         try {
             List<House> houses = houseService.findByCategoryId(id);
@@ -104,7 +104,7 @@ public class HouseController {
         }
     }
 
-    @GetMapping("/filterByHost/{id}")
+    @GetMapping("/host/{id}")
     public ResponseEntity<List<House>> getListHouseByHost(@PathVariable Long id) {
         try {
             List<House> houses = houseService.findByHostId(id);
