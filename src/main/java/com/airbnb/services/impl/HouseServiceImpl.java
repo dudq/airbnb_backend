@@ -106,7 +106,7 @@ public class HouseServiceImpl implements HouseService {
         }
 
         Long currentUserId = getCurrentUser().getId();
-        if (house.getUser().equals(currentUserId)) {
+        if (house.getUser().getId().equals(currentUserId)) {
 
             List<ImageOfHouse> imageOfHouses = new ArrayList<>();
             for (ImageOfHouse picture : house.getPicture()) {
