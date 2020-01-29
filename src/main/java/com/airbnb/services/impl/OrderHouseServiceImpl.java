@@ -20,10 +20,10 @@ public class OrderHouseServiceImpl implements OrderHouseService {
         return orderHouseRepository.findAll();
     }
 
-    @Override
-    public OrderHouse findByName(String name) {
-        return orderHouseRepository.findByName(name);
-    }
+//    @Override
+//    public OrderHouse findByName(String name) {
+//        return orderHouseRepository.findByName(name);
+//    }
 
     @Override
     public OrderHouse findById(Long id) {

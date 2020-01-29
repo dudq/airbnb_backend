@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/orderHouses")
+@RequestMapping("/api/order-houses")
 
 public class OrderHouseController {
     @Autowired
