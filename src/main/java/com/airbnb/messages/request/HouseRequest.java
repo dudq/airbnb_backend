@@ -30,7 +30,7 @@ public class HouseRequest {
         house.setDescription(this.description);
         house.setPrice(this.price);
         house.setArea(this.area);
-        house.setStatus(status);
+        house.setStatus(Status.AVAILABLE);
         house.setUser(user);
         return house;
     }

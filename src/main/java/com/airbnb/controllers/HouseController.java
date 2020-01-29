@@ -2,6 +2,7 @@ package com.airbnb.controllers;
 
 import com.airbnb.messages.request.HouseRequest;
 import com.airbnb.messages.response.HouseInformation;
+import com.airbnb.messages.response.HouseInformationOfHost;
 import com.airbnb.messages.response.ResponseMessage;
 import com.airbnb.models.House;
 import com.airbnb.security.sevice.UserPrinciple;
@@ -9,7 +10,6 @@ import com.airbnb.services.HouseService;
 import com.airbnb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,7 +52,7 @@ public class HouseController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('HOST')")
+    @PreAuthorize("hasRole('HOST') or hasRole('ADMIN')")
     public ResponseEntity<Void> createHouse(@RequestBody HouseRequest house) {
         try {
             houseService.createHouse(house);
@@ -63,7 +63,7 @@ public class HouseController {
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('HOST')")
+    @PreAuthorize("hasRole('HOST') or hasRole('ADMIN')")
     public ResponseEntity<Void> updateHouse(@RequestBody House house) {
         try {
             houseService.updateHouse(house);
@@ -105,16 +105,16 @@ public class HouseController {
     }
 
     @GetMapping("/host/{id}")
-    public ResponseEntity<List<House>> getListHouseByHost(@PathVariable Long id) {
+    public ResponseEntity<List<HouseInformationOfHost>> getListHouseByHost(@PathVariable Long id) {
         try {
-            List<House> houses = houseService.findByHostId(id);
-            return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
+            List<HouseInformationOfHost> houses = houseService.getHouseListOfHost(id);
+            return new ResponseEntity<List<HouseInformationOfHost>>(houses, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    //    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ResponseMessage> listAllHouse(@RequestParam(value = "page", required = false) Integer page,
                                                         @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         List<HouseInformation> houses = this.houseService.getListHouseInformation(1, 2);

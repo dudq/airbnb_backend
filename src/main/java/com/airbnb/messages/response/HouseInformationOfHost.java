@@ -4,9 +4,9 @@ public class HouseInformationOfHost {
     private Long id;
     private String name;
     private String address;
-    //    private String categoryName;
+    private String categoryName;
     private String price;
-    private String status;
+//    private String status;
 
     public Long getId() {
         return id;
@@ -32,13 +32,13 @@ public class HouseInformationOfHost {
         this.address = address;
     }
 
-//    public String getCategoryName() {
-//        return categoryName;
-//    }
-//
-//    public void setCategoryName(String categoryName) {
-//        this.categoryName = categoryName;
-//    }
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public String getPrice() {
         return price;
@@ -48,11 +48,11 @@ public class HouseInformationOfHost {
         this.price = price;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+//    public String getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(String status) {
+//        this.status = status;
+//    }
 }

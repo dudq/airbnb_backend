@@ -77,9 +77,9 @@ public class HouseDao {
     }
 
     public List<HouseInformationOfHost> getListHouseInformationOfHost(Long userId) {
-        String sql = "select h.id, h.houseName, h.address, h.price, h.status " +
-                "from house h join users u join user_roles ur " +
-                "on h.host_id = u.id and h.host_id = ur.user_id " +
+        String sql = "select h.id, h.houseName, c.name, h.address, h.price, h.status " +
+                "from house h join users u join user_roles ur join Category c " +
+                "on h.host_id = u.id and h.host_id = ur.user_id and c.id = h.category_id " +
                 "where ur.role_id = 2 and ur.user_id = :urid";
         Query query = em.createNativeQuery(sql);
         query.setParameter("urid", userId);
@@ -94,9 +94,10 @@ public class HouseDao {
             house = new HouseInformationOfHost();
             house.setId(Long.parseLong(result[index++].toString()));
             house.setName(result[index++].toString());
+            house.setCategoryName(result[index++].toString());
             house.setAddress(result[index++].toString());
             house.setPrice(result[index++].toString());
-            house.setStatus(result[index].toString());
+//            house.setStatus(result[index].toString());
 
             houseInformationOfHostList.add(house);
         }

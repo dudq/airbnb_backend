@@ -4,6 +4,7 @@ import com.airbnb.exceptions.InvalidRequestException;
 import com.airbnb.messages.request.HouseRequest;
 import com.airbnb.messages.response.HouseDetail;
 import com.airbnb.messages.response.HouseInformation;
+import com.airbnb.messages.response.HouseInformationOfHost;
 import com.airbnb.models.Category;
 import com.airbnb.models.House;
 import com.airbnb.models.ImageOfHouse;
@@ -55,6 +56,12 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
+    public List<HouseInformationOfHost> getHouseListOfHost(Long userId) {
+        return houseDao.getListHouseInformationOfHost(userId);
+    }
+
+
+    @Override
     public List<House> findByCategoryId(Long id) {
         Category category = categoryService.findById(id);
         return houseRepository.findByCategory(category);
@@ -93,14 +100,31 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public void updateHouse(House house) {
-        House houseExisted = houseRepository.findById(house.getId()).get();
-        if (houseExisted == null) {
+        House houseUpdated = houseRepository.findById(house.getId()).get();
+        if (houseUpdated == null) {
             throw new InvalidRequestException("House is not existed");
         }
 
         Long currentUserId = getCurrentUser().getId();
-        if (house.getUser().equals(currentUserId)) {
-            houseRepository.save(house);
+        if (house.getUser().getId().equals(currentUserId)) {
+
+            List<ImageOfHouse> imageOfHouses = new ArrayList<>();
+            for (ImageOfHouse picture : house.getPicture()) {
+                ImageOfHouse imageOfHouse = new ImageOfHouse(picture.getUrl());
+                imageOfHouseService.createImageOfHouse(imageOfHouse);
+                imageOfHouses.add(imageOfHouse);
+            }
+            house.setPicture(imageOfHouses);
+            houseUpdated.setHouseName(house.getHouseName());
+            houseUpdated.setCategory(house.getCategory());
+            houseUpdated.setPicture(house.getPicture());
+            houseUpdated.setAddress(house.getAddress());
+            houseUpdated.setBedroomNumber(house.getBedroomNumber());
+            houseUpdated.setBathroomNumber(house.getBathroomNumber());
+            houseUpdated.setArea(house.getArea());
+            houseUpdated.setDescription(house.getDescription());
+            houseUpdated.setPrice(house.getPrice());
+            houseRepository.save(houseUpdated);
         } else {
             throw new InvalidRequestException("Current user is not valid");
         }

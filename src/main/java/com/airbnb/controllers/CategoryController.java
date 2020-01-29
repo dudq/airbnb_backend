@@ -5,6 +5,7 @@ import com.airbnb.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createCategory(@RequestBody Category category) {
         try {
             categoryService.createCategory(category);
@@ -46,6 +48,7 @@ public class CategoryController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateCategory(@RequestBody Category category) {
         try {
             categoryService.updateCategory(category);
@@ -56,6 +59,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCategory(@PathVariable(value = "id") Long id) {
         try {
             categoryService.deleteCategory(id);
