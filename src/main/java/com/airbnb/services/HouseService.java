@@ -3,6 +3,7 @@ package com.airbnb.services;
 import com.airbnb.messages.request.HouseRequest;
 import com.airbnb.messages.response.HouseDetail;
 import com.airbnb.messages.response.HouseInformation;
+import com.airbnb.messages.response.HouseInformationOfHost;
 import com.airbnb.models.House;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ public interface HouseService {
     List<House> findAll();
 
     List<House> findByHostId(Long id);
+
+    List<HouseInformationOfHost> getHouseListOfHost(Long userId);
 
     List<House> findByCategoryId(Long id);
 
