@@ -42,9 +42,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-//    @OneToMany(targetEntity = House.class)
-//    private List<House> house;
-
 
     public User() {
     }
@@ -112,11 +109,4 @@ public class User {
         this.picture = picture;
     }
 
-//    public List<House> getHouse() {
-//        return house;
-//    }
-//
-//    public void setHouse(List<House> house) {
-//        this.house = house;
-//    }
 }
