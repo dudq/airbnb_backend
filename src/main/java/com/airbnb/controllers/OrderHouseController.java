@@ -18,12 +18,13 @@ public class OrderHouseController {
     private OrderHouseService orderHouseService;
 
     @GetMapping
-    public ResponseEntity<List<OrderHouse>> getListOrderHouse() {
-        List<OrderHouse> orderHouses = orderHouseService.findAll();
-        if (orderHouses.isEmpty()) {
-            return new ResponseEntity<List<OrderHouse>>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<ResponseMessage> getListOrderHouse() {
+        try {
+            List<OrderHouse> orderHouses = orderHouseService.findAll();
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouses), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(orderHouses, HttpStatus.OK);
     }
 
     @GetMapping(value = "/house/{id}")
@@ -37,12 +38,12 @@ public class OrderHouseController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<OrderHouse> getOrderHouse(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseMessage> getOrderHouse(@PathVariable("id") Long id) {
         try {
             OrderHouse orderHouse = orderHouseService.findById(id);
-            return new ResponseEntity<OrderHouse>(orderHouse, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouse), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
         }
     }
 

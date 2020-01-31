@@ -33,14 +33,17 @@ public class OrderHouseServiceImpl implements OrderHouseService {
     }
 
     @Override
-    public List<OrderHouse> findAll() {
-        return orderHouseRepository.findAll();
+    public List<OrderHouse> findAll() throws Exception {
+        try {
+            return orderHouseRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception("Has some error");
+        }
     }
 
     @Override
     public List<OrderHouse> findByHouse(Long houseId) throws Exception {
         Long currentUserId = getCurrentUser().getId();
-
         House house = houseService.findById(houseId);
         Long hostId = house.getUser().getId();
         if (currentUserId.equals(hostId)) {
@@ -51,13 +54,12 @@ public class OrderHouseServiceImpl implements OrderHouseService {
     }
 
     @Override
-    public OrderHouse findById(Long id) {
-        OrderHouse orderHouse = orderHouseRepository.findById(id).get();
-
-        if (orderHouse == null) {
+    public OrderHouse findById(Long id) throws Exception {
+        try {
+            return orderHouseRepository.findById(id).get();
+        } catch (Exception e) {
             throw new InvalidRequestException("Order House is not existed");
         }
-        return orderHouse;
     }
 
     @Override

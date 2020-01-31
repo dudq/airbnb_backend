@@ -7,11 +7,11 @@ import java.util.List;
 
 @Service
 public interface OrderHouseService {
-    List<OrderHouse> findAll();
+    List<OrderHouse> findAll() throws Exception;
 
     List<OrderHouse> findByHouse(Long houseId) throws Exception;
 
-    OrderHouse findById(Long id);
+    OrderHouse findById(Long id) throws Exception;
 
     void createOrderHouse(OrderHouse orderHouse) throws Exception;
 
