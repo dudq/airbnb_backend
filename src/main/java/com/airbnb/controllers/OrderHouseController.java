@@ -26,6 +26,16 @@ public class OrderHouseController {
         return new ResponseEntity<>(orderHouses, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/house/{id}")
+    public ResponseEntity<ResponseMessage> getListBookingByHouse(@PathVariable("id") Long id) {
+        try {
+            List<OrderHouse> orderHouses = orderHouseService.findByHouse(id);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouses), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<OrderHouse> getOrderHouse(@PathVariable("id") Long id) {
         try {

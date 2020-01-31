@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderHouseService {
     List<OrderHouse> findAll();
 
-//    OrderHouse findByName(String name);
+    List<OrderHouse> findByHouse(Long houseId) throws Exception;
 
     OrderHouse findById(Long id);
 

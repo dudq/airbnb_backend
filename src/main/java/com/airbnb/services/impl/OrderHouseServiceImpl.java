@@ -37,10 +37,18 @@ public class OrderHouseServiceImpl implements OrderHouseService {
         return orderHouseRepository.findAll();
     }
 
-//    @Override
-//    public OrderHouse findByName(String name) {
-//        return orderHouseRepository.findByName(name);
-//    }
+    @Override
+    public List<OrderHouse> findByHouse(Long houseId) throws Exception {
+        Long currentUserId = getCurrentUser().getId();
+
+        House house = houseService.findById(houseId);
+        Long hostId = house.getUser().getId();
+        if (currentUserId.equals(hostId)) {
+            return orderHouseRepository.findByHouse(house);
+        } else {
+            throw new Exception("You haven't role");
+        }
+    }
 
     @Override
     public OrderHouse findById(Long id) {
