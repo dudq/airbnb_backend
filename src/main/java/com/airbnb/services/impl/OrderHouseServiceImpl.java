@@ -6,9 +6,12 @@ import com.airbnb.models.OrderHouse;
 import com.airbnb.models.Status;
 import com.airbnb.models.StatusOrderHouse;
 import com.airbnb.repositories.OrderHouseRepository;
+import com.airbnb.security.sevice.UserPrinciple;
 import com.airbnb.services.HouseService;
 import com.airbnb.services.OrderHouseService;
+import com.airbnb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,13 @@ public class OrderHouseServiceImpl implements OrderHouseService {
 
     @Autowired
     private HouseService houseService;
+
+    @Autowired
+    private UserService userService;
+
+    private UserPrinciple getCurrentUser() {
+        return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
     @Override
     public List<OrderHouse> findAll() {
@@ -43,39 +53,59 @@ public class OrderHouseServiceImpl implements OrderHouseService {
     }
 
     @Override
-    public void createOrderHouse(OrderHouse orderHouse) {
+    public void createOrderHouse(OrderHouse orderHouse) throws Exception {
         House house = houseService.findById(orderHouse.getHouse().getId());
-        house.setStatus(Status.BOOKED);
-        houseService.updateHouse(house);
-        orderHouse.setStatus(StatusOrderHouse.BOOKING);
-        orderHouseRepository.save(orderHouse);
+        if (house.getStatus() == Status.AVAILABLE) {
+            house.setStatus(Status.BOOKED);
+            houseService.updateHouse(house);
+            orderHouse.setStatus(StatusOrderHouse.BOOKING);
+            orderHouseRepository.save(orderHouse);
+        } else {
+            throw new Exception(" House is not available");
+        }
     }
 
     @Override
     public void updateOrderHouse(OrderHouse orderHouse) {
-        orderHouseRepository.save(orderHouse);
+        Long currentUserId = getCurrentUser().getId();
+
+        House house = houseService.findById(orderHouse.getHouse().getId());
+        if (house.getId().equals(currentUserId)) {
+            orderHouseRepository.save(orderHouse);
+        }
     }
 
     @Override
     public void checkIn(OrderHouse orderHouse) {
+        Long currentUserId = getCurrentUser().getId();
         House house = houseService.findById(orderHouse.getHouse().getId());
-        house.setStatus(Status.UNAVAILABLE);
-        houseService.updateHouse(house);
-        orderHouse.setStatus(StatusOrderHouse.CHECKIN);
-        orderHouseRepository.save(orderHouse);
+        if (house.getId().equals(currentUserId)) {
+            house.setStatus(Status.UNAVAILABLE);
+            houseService.updateHouse(house);
+            orderHouse.setStatus(StatusOrderHouse.CHECKIN);
+            orderHouseRepository.save(orderHouse);
+        }
     }
 
     @Override
     public void checkOut(OrderHouse orderHouse) {
+        Long currentUserId = getCurrentUser().getId();
         House house = houseService.findById(orderHouse.getHouse().getId());
-        house.setStatus(Status.AVAILABLE);
-        houseService.updateHouse(house);
-        orderHouse.setStatus(StatusOrderHouse.CHECKOUT);
-        orderHouseRepository.save(orderHouse);
+        if (house.getId().equals(currentUserId)) {
+            house.setStatus(Status.AVAILABLE);
+            houseService.updateHouse(house);
+            orderHouse.setStatus(StatusOrderHouse.CHECKOUT);
+            orderHouseRepository.save(orderHouse);
+        }
     }
 
     @Override
     public void deleteOrderHouse(Long id) {
-        orderHouseRepository.deleteById(id);
+        Long currentUserId = getCurrentUser().getId();
+        OrderHouse orderHouse = orderHouseRepository.findById(id).get();
+        House house = houseService.findById(orderHouse.getHouse().getId());
+        if (house.getId().equals(currentUserId)) {
+            orderHouseRepository.deleteById(id);
+        }
     }
 }

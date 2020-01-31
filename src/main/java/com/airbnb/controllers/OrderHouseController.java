@@ -1,5 +1,6 @@
 package com.airbnb.controllers;
 
+import com.airbnb.messages.response.ResponseMessage;
 import com.airbnb.models.OrderHouse;
 import com.airbnb.services.OrderHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,12 @@ public class OrderHouseController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createOrderHouse(@RequestBody OrderHouse orderHouse) {
+    public ResponseEntity<ResponseMessage> createOrderHouse(@RequestBody OrderHouse orderHouse) {
         try {
             orderHouseService.createOrderHouse(orderHouse);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(new ResponseMessage(true, "Booking successfully", orderHouse), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

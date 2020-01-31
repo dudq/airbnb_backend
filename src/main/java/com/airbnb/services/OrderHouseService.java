@@ -13,7 +13,7 @@ public interface OrderHouseService {
 
     OrderHouse findById(Long id);
 
-    void createOrderHouse(OrderHouse orderHouse);
+    void createOrderHouse(OrderHouse orderHouse) throws Exception;
 
     void updateOrderHouse(OrderHouse orderHouse);
 
