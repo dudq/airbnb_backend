@@ -1,8 +1,12 @@
 package com.airbnb.services.impl;
 
 import com.airbnb.exceptions.InvalidRequestException;
+import com.airbnb.models.House;
 import com.airbnb.models.OrderHouse;
+import com.airbnb.models.Status;
+import com.airbnb.models.StatusOrderHouse;
 import com.airbnb.repositories.OrderHouseRepository;
+import com.airbnb.services.HouseService;
 import com.airbnb.services.OrderHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,9 @@ public class OrderHouseServiceImpl implements OrderHouseService {
 
     @Autowired
     private OrderHouseRepository orderHouseRepository;
+
+    @Autowired
+    private HouseService houseService;
 
     @Override
     public List<OrderHouse> findAll() {
@@ -37,11 +44,33 @@ public class OrderHouseServiceImpl implements OrderHouseService {
 
     @Override
     public void createOrderHouse(OrderHouse orderHouse) {
+        House house = houseService.findById(orderHouse.getHouse().getId());
+        house.setStatus(Status.BOOKED);
+        houseService.updateHouse(house);
+        orderHouse.setStatus(StatusOrderHouse.BOOKING);
         orderHouseRepository.save(orderHouse);
     }
 
     @Override
     public void updateOrderHouse(OrderHouse orderHouse) {
+        orderHouseRepository.save(orderHouse);
+    }
+
+    @Override
+    public void checkIn(OrderHouse orderHouse) {
+        House house = houseService.findById(orderHouse.getHouse().getId());
+        house.setStatus(Status.UNAVAILABLE);
+        houseService.updateHouse(house);
+        orderHouse.setStatus(StatusOrderHouse.CHECKIN);
+        orderHouseRepository.save(orderHouse);
+    }
+
+    @Override
+    public void checkOut(OrderHouse orderHouse) {
+        House house = houseService.findById(orderHouse.getHouse().getId());
+        house.setStatus(Status.AVAILABLE);
+        houseService.updateHouse(house);
+        orderHouse.setStatus(StatusOrderHouse.CHECKOUT);
         orderHouseRepository.save(orderHouse);
     }
 

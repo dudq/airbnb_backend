@@ -17,5 +17,9 @@ public interface OrderHouseService {
 
     void updateOrderHouse(OrderHouse orderHouse);
 
+    void checkIn(OrderHouse orderHouse);
+
+    void checkOut(OrderHouse orderHouse);
+
     void deleteOrderHouse(Long id);
 }
