@@ -80,28 +80,35 @@ public class OrderHouseServiceImpl implements OrderHouseService {
         Long currentUserId = getCurrentUser().getId();
 
         House house = houseService.findById(orderHouse.getHouse().getId());
-        if (house.getId().equals(currentUserId)) {
+        if (house.getUser().getId().equals(currentUserId)) {
             orderHouseRepository.save(orderHouse);
         }
     }
 
     @Override
-    public void checkIn(OrderHouse orderHouse) {
-        Long currentUserId = getCurrentUser().getId();
-        House house = houseService.findById(orderHouse.getHouse().getId());
-        if (house.getId().equals(currentUserId)) {
-            house.setStatus(Status.UNAVAILABLE);
-            houseService.updateHouse(house);
-            orderHouse.setStatus(StatusOrderHouse.CHECKIN);
-            orderHouseRepository.save(orderHouse);
+    public void checkIn(Long houseBookingId) {
+        try {
+            Long currentUserId = getCurrentUser().getId();
+            OrderHouse orderHouse = orderHouseRepository.findById(houseBookingId).get();
+            House house = houseService.findById(orderHouse.getHouse().getId());
+            // check host of house
+            if (house.getUser().getId().equals(currentUserId)) {
+                house.setStatus(Status.UNAVAILABLE);
+                houseService.updateHouse(house);
+                orderHouse.setStatus(StatusOrderHouse.CHECKIN);
+                orderHouseRepository.save(orderHouse);
+            }
+        } catch (Exception e) {
+            throw new InvalidRequestException("Order House is not existed");
         }
     }
 
     @Override
-    public void checkOut(OrderHouse orderHouse) {
+    public void checkOut(Long houseBookingId) {
         Long currentUserId = getCurrentUser().getId();
+        OrderHouse orderHouse = orderHouseRepository.findById(houseBookingId).get();
         House house = houseService.findById(orderHouse.getHouse().getId());
-        if (house.getId().equals(currentUserId)) {
+        if (house.getUser().getId().equals(currentUserId)) {
             house.setStatus(Status.AVAILABLE);
             houseService.updateHouse(house);
             orderHouse.setStatus(StatusOrderHouse.CHECKOUT);
