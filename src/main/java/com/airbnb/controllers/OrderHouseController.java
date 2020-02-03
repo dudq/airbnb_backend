@@ -77,6 +77,29 @@ public class OrderHouseController {
         }
     }
 
+    @PutMapping("/checkout/{id}")
+    public ResponseEntity<ResponseMessage> checkOut(@PathVariable("id") Long id) {
+        try {
+            orderHouseService.checkOut(id);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<ResponseMessage> cancelBooking(@PathVariable("id") Long id) {
+        try {
+            if (orderHouseService.cancelBooking(id)) {
+                return new ResponseEntity<>(new ResponseMessage(true, "OK", null), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ResponseMessage(false, "Expired to cancel", null), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrderHouse(@PathVariable(value = "id") Long id) {
         try {

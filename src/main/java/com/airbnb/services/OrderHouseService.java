@@ -17,9 +17,11 @@ public interface OrderHouseService {
 
     void updateOrderHouse(OrderHouse orderHouse);
 
-    void checkIn(Long houseBookingId);
+    void checkIn(Long houseBookingId) throws Exception;
 
-    void checkOut(Long houseBookingId);
+    void checkOut(Long houseBookingId) throws Exception;
+
+    boolean cancelBooking(Long houseBookingId) throws Exception;
 
     void deleteOrderHouse(Long id);
 }

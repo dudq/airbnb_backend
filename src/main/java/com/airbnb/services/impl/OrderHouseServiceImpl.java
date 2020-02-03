@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -86,7 +87,7 @@ public class OrderHouseServiceImpl implements OrderHouseService {
     }
 
     @Override
-    public void checkIn(Long houseBookingId) {
+    public void checkIn(Long houseBookingId) throws Exception {
         try {
             Long currentUserId = getCurrentUser().getId();
             OrderHouse orderHouse = orderHouseRepository.findById(houseBookingId).get();
@@ -99,22 +100,52 @@ public class OrderHouseServiceImpl implements OrderHouseService {
                 orderHouseRepository.save(orderHouse);
             }
         } catch (Exception e) {
-            throw new InvalidRequestException("Order House is not existed");
+            throw new Exception("You don't have role");
         }
     }
 
     @Override
     public void checkOut(Long houseBookingId) {
-        Long currentUserId = getCurrentUser().getId();
-        OrderHouse orderHouse = orderHouseRepository.findById(houseBookingId).get();
-        House house = houseService.findById(orderHouse.getHouse().getId());
-        if (house.getUser().getId().equals(currentUserId)) {
-            house.setStatus(Status.AVAILABLE);
-            houseService.updateHouse(house);
-            orderHouse.setStatus(StatusOrderHouse.CHECKOUT);
-            orderHouseRepository.save(orderHouse);
+        try {
+            Long currentUserId = getCurrentUser().getId();
+            OrderHouse orderHouse = orderHouseRepository.findById(houseBookingId).get();
+            House house = houseService.findById(orderHouse.getHouse().getId());
+            // check host of house
+            if (house.getUser().getId().equals(currentUserId)) {
+                house.setStatus(Status.AVAILABLE);
+                houseService.updateHouse(house);
+                orderHouse.setStatus(StatusOrderHouse.CHECKOUT);
+                orderHouseRepository.save(orderHouse);
+            }
+        } catch (Exception e) {
+            throw new InvalidRequestException("You don't have role");
         }
     }
+
+    @Override
+    public boolean cancelBooking(Long houseBookingId) throws Exception {
+        try {
+            Long currentUserId = getCurrentUser().getId();
+            OrderHouse orderHouse = orderHouseRepository.findById(houseBookingId).get();
+            House house = houseService.findById(orderHouse.getHouse().getId());
+            Date now = new Date();
+            boolean isExpired = (now.getTime() - orderHouse.getDateCheckIn().getTime()) < 1000 * 60 * 60 * 24;
+            // check user order of house
+            if (orderHouse.getUser().getId().equals(currentUserId)
+                    && orderHouse.getStatus() == StatusOrderHouse.BOOKING
+                    && !isExpired) {
+                house.setStatus(Status.AVAILABLE);
+                houseService.updateHouse(house);
+                orderHouse.setStatus(StatusOrderHouse.CANCEL);
+                orderHouseRepository.save(orderHouse);
+                return true;
+            }
+        } catch (Exception e) {
+            throw new Exception("You don't have role");
+        }
+        return false;
+    }
+
 
     @Override
     public void deleteOrderHouse(Long id) {
