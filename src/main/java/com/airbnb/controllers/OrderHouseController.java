@@ -1,5 +1,6 @@
 package com.airbnb.controllers;
 
+import com.airbnb.messages.response.ResponseMessage;
 import com.airbnb.models.OrderHouse;
 import com.airbnb.services.OrderHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,37 +13,47 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/order-houses")
-
 public class OrderHouseController {
     @Autowired
     private OrderHouseService orderHouseService;
 
     @GetMapping
-    public ResponseEntity<List<OrderHouse>> getListOrderHouse() {
-        List<OrderHouse> orderHouses = orderHouseService.findAll();
-        if (orderHouses.isEmpty()) {
-            return new ResponseEntity<List<OrderHouse>>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<ResponseMessage> getListOrderHouse() {
+        try {
+            List<OrderHouse> orderHouses = orderHouseService.findAll();
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouses), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(orderHouses, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/house/{id}")
+    public ResponseEntity<ResponseMessage> getListBookingByHouse(@PathVariable("id") Long id) {
+        try {
+            List<OrderHouse> orderHouses = orderHouseService.findByHouse(id);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouses), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<OrderHouse> getOrderHouse(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseMessage> getOrderHouse(@PathVariable("id") Long id) {
         try {
             OrderHouse orderHouse = orderHouseService.findById(id);
-            return new ResponseEntity<OrderHouse>(orderHouse, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouse), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Void> createOrderHouse(@RequestBody OrderHouse orderHouse) {
+    public ResponseEntity<ResponseMessage> createOrderHouse(@RequestBody OrderHouse orderHouse) {
         try {
             orderHouseService.createOrderHouse(orderHouse);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(new ResponseMessage(true, "Booking successfully", orderHouse), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,6 +64,39 @@ public class OrderHouseController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/checkin/{id}")
+    public ResponseEntity<ResponseMessage> checkIn(@PathVariable("id") Long id) {
+        try {
+            orderHouseService.checkIn(id);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/checkout/{id}")
+    public ResponseEntity<ResponseMessage> checkOut(@PathVariable("id") Long id) {
+        try {
+            orderHouseService.checkOut(id);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<ResponseMessage> cancelBooking(@PathVariable("id") Long id) {
+        try {
+            if (orderHouseService.cancelBooking(id)) {
+                return new ResponseEntity<>(new ResponseMessage(true, "OK", null), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ResponseMessage(false, "Expired to cancel", null), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
         }
     }
 

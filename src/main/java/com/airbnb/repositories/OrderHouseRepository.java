@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface OrderHouseRepository extends JpaRepository<OrderHouse, Long> {
-    //    OrderHouse findByName(String name);
-    OrderHouse findByHouse(House house);
+    List<OrderHouse> findByHouse(House house);
 
     List<OrderHouse> findByUser(User user);
 }

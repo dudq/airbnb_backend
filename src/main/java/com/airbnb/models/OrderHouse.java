@@ -21,6 +21,9 @@ public class OrderHouse {
     @NotEmpty
     private Integer guest;
 
+    @Enumerated(EnumType.STRING)
+    private StatusOrderHouse status;
+
     @ManyToOne(targetEntity = House.class)
     private House house;
     @ManyToOne(targetEntity = User.class)
@@ -30,10 +33,6 @@ public class OrderHouse {
     public OrderHouse() {
     }
 
-//    public OrderHouse(@NotBlank String name) {
-//        this.name = name;
-//    }
-
     public Long getId() {
         return id;
     }
@@ -41,14 +40,6 @@ public class OrderHouse {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public String getName() {
-//        return name;
-//    }
-
-//    public void setName(String name) {
-//        this.name = name;
-//    }
 
     public Date getDateCheckOut() {
         return dateCheckOut;
@@ -82,11 +73,19 @@ public class OrderHouse {
         this.house = house;
     }
 
-    public User getUsers() {
+    public User getUser() {
         return user;
     }
 
-    public void setUsers(User user) {
+    public void setUser(User user) {
         this.user = user;
+    }
+
+    public StatusOrderHouse getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusOrderHouse status) {
+        this.status = status;
     }
 }
