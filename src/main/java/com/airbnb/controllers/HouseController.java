@@ -1,9 +1,6 @@
 package com.airbnb.controllers;
 
 import com.airbnb.messages.request.HouseRequest;
-import com.airbnb.messages.response.HouseInformation;
-import com.airbnb.messages.response.HouseInformationOfHost;
-import com.airbnb.messages.response.ResponseMessage;
 import com.airbnb.models.House;
 import com.airbnb.security.sevice.UserPrinciple;
 import com.airbnb.services.HouseService;
@@ -105,29 +102,29 @@ public class HouseController {
     }
 
     @GetMapping("/host/{id}")
-    public ResponseEntity<List<HouseInformationOfHost>> getListHouseByHost(@PathVariable Long id) {
+    public ResponseEntity<List<House>> getListHouseByHost(@PathVariable Long id) {
         try {
-            List<HouseInformationOfHost> houses = houseService.getHouseListOfHost(id);
-            return new ResponseEntity<List<HouseInformationOfHost>>(houses, HttpStatus.OK);
+            List<House> houses = houseService.findByHostId(id);
+            return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     //    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ResponseMessage> listAllHouse(@RequestParam(value = "page", required = false) Integer page,
-                                                        @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        List<HouseInformation> houses = this.houseService.getListHouseInformation(1, 2);
-
-        if (houses.isEmpty()) {
-            return new ResponseEntity<ResponseMessage>(
-                    new ResponseMessage(false, "Not Found Data", null), HttpStatus.OK
-            );
-        }
-
-        return new ResponseEntity<ResponseMessage>(
-                new ResponseMessage(true, "Successfully. Get list all house", houses), HttpStatus.OK
-        );
-    }
+//    public ResponseEntity<ResponseMessage> listAllHouse(@RequestParam(value = "page", required = false) Integer page,
+//                                                        @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+//        List<HouseInformation> houses = this.houseService.getListHouseInformation(1, 2);
+//
+//        if (houses.isEmpty()) {
+//            return new ResponseEntity<ResponseMessage>(
+//                    new ResponseMessage(false, "Not Found Data", null), HttpStatus.OK
+//            );
+//        }
+//
+//        return new ResponseEntity<ResponseMessage>(
+//                new ResponseMessage(true, "Successfully. Get list all house", houses), HttpStatus.OK
+//        );
+//    }
 
 }
