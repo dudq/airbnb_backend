@@ -11,6 +11,8 @@ public interface OrderHouseService {
 
     List<OrderHouse> findByHouse(Long houseId) throws Exception;
 
+    List<OrderHouse> findAllByHost(Long hostId) throws Exception;
+
     OrderHouse findById(Long id) throws Exception;
 
     void createOrderHouse(OrderHouse orderHouse) throws Exception;

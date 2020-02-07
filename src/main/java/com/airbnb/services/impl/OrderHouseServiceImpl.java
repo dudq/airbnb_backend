@@ -146,6 +146,16 @@ public class OrderHouseServiceImpl implements OrderHouseService {
         return false;
     }
 
+    @Override
+    public List<OrderHouse> findAllByHost(Long hostId) throws Exception {
+        Long currentUserId = getCurrentUser().getId();
+
+        if (currentUserId.equals(hostId)) {
+            return orderHouseRepository.findByHouse_User_Id(hostId);
+        } else {
+            throw new Exception("You don't have role");
+        }
+    }
 
     @Override
     public void deleteOrderHouse(Long id) {
