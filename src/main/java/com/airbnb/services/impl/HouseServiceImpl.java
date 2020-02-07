@@ -124,6 +124,7 @@ public class HouseServiceImpl implements HouseService {
             houseUpdated.setArea(house.getArea());
             houseUpdated.setDescription(house.getDescription());
             houseUpdated.setPrice(house.getPrice());
+            houseUpdated.setStatus(house.getStatus());
             houseRepository.save(houseUpdated);
         } else {
             throw new InvalidRequestException("Current user is not valid");
