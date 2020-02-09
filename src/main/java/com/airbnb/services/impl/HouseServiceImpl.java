@@ -106,7 +106,7 @@ public class HouseServiceImpl implements HouseService {
         }
 
         Long currentUserId = getCurrentUser().getId();
-        if (house.getUser().getId().equals(currentUserId)) {
+//        if (house.getUser().getId().equals(currentUserId)) {
 
             List<ImageOfHouse> imageOfHouses = new ArrayList<>();
             for (ImageOfHouse picture : house.getPicture()) {
@@ -116,19 +116,19 @@ public class HouseServiceImpl implements HouseService {
             }
             house.setPicture(imageOfHouses);
             houseUpdated.setHouseName(house.getHouseName());
-            houseUpdated.setCategory(house.getCategory());
-            houseUpdated.setPicture(house.getPicture());
-            houseUpdated.setAddress(house.getAddress());
-            houseUpdated.setBedroomNumber(house.getBedroomNumber());
-            houseUpdated.setBathroomNumber(house.getBathroomNumber());
-            houseUpdated.setArea(house.getArea());
-            houseUpdated.setDescription(house.getDescription());
-            houseUpdated.setPrice(house.getPrice());
-            houseUpdated.setStatus(house.getStatus());
-            houseRepository.save(houseUpdated);
-        } else {
-            throw new InvalidRequestException("Current user is not valid");
-        }
+        houseUpdated.setCategory(house.getCategory());
+        houseUpdated.setPicture(house.getPicture());
+        houseUpdated.setAddress(house.getAddress());
+        houseUpdated.setBedroomNumber(house.getBedroomNumber());
+        houseUpdated.setBathroomNumber(house.getBathroomNumber());
+        houseUpdated.setArea(house.getArea());
+        houseUpdated.setDescription(house.getDescription());
+        houseUpdated.setPrice(house.getPrice());
+        houseUpdated.setStatus(house.getStatus());
+        houseRepository.save(houseUpdated);
+//        } else {
+//            throw new InvalidRequestException("Current user is not valid");
+//        }
     }
 
     @Override
