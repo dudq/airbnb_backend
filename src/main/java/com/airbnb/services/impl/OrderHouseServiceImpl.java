@@ -1,10 +1,7 @@
 package com.airbnb.services.impl;
 
 import com.airbnb.exceptions.InvalidRequestException;
-import com.airbnb.models.House;
-import com.airbnb.models.OrderHouse;
-import com.airbnb.models.Status;
-import com.airbnb.models.StatusOrderHouse;
+import com.airbnb.models.*;
 import com.airbnb.repositories.OrderHouseRepository;
 import com.airbnb.security.sevice.UserPrinciple;
 import com.airbnb.services.HouseService;
@@ -146,6 +143,28 @@ public class OrderHouseServiceImpl implements OrderHouseService {
         return false;
     }
 
+    @Override
+    public List<OrderHouse> findAllByHost(Long hostId) throws Exception {
+        Long currentUserId = getCurrentUser().getId();
+
+        if (currentUserId.equals(hostId)) {
+            return orderHouseRepository.findByHouse_User_Id(hostId);
+        } else {
+            throw new Exception("You don't have role");
+        }
+    }
+
+    @Override
+    public List<OrderHouse> findAllByUser(Long userId) throws Exception {
+        Long currentUserId = getCurrentUser().getId();
+
+        if (currentUserId.equals(userId)) {
+            User currentUser = userService.findById(currentUserId);
+            return orderHouseRepository.findByUser(currentUser);
+        } else {
+            throw new Exception("You don't have role");
+        }
+    }
 
     @Override
     public void deleteOrderHouse(Long id) {

@@ -13,4 +13,6 @@ public interface OrderHouseRepository extends JpaRepository<OrderHouse, Long> {
     List<OrderHouse> findByHouse(House house);
 
     List<OrderHouse> findByUser(User user);
+
+    List<OrderHouse> findByHouse_User_Id(Long hostId);
 }

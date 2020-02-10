@@ -37,6 +37,26 @@ public class OrderHouseController {
         }
     }
 
+    @GetMapping(value = "/host/{id}")
+    public ResponseEntity<ResponseMessage> getListBookingByHost(@PathVariable("id") Long id) {
+        try {
+            List<OrderHouse> orderHouses = orderHouseService.findAllByHost(id);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouses), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/user/{id}")
+    public ResponseEntity<ResponseMessage> getListBookingByUser(@PathVariable("id") Long id) {
+        try {
+            List<OrderHouse> orderHouses = orderHouseService.findAllByUser(id);
+            return new ResponseEntity<>(new ResponseMessage(true, "OK", orderHouses), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(false, e.getMessage(), null), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<ResponseMessage> getOrderHouse(@PathVariable("id") Long id) {
         try {
