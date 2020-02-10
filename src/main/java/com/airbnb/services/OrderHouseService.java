@@ -13,6 +13,8 @@ public interface OrderHouseService {
 
     List<OrderHouse> findAllByHost(Long hostId) throws Exception;
 
+    List<OrderHouse> findAllByUser(Long userId) throws Exception;
+
     OrderHouse findById(Long id) throws Exception;
 
     void createOrderHouse(OrderHouse orderHouse) throws Exception;
